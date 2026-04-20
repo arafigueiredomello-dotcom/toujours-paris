@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F5F0E6">
+<title>Toujours Paris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --creme: #F5F0E6;
+  --creme-2: #EDE4D3;
+  --creme-3: #DDD6CA;
+  --marinho: #1C2A4A;
+  --marinho-2: #2C3B5C;
+  --carmim: #B42B30;
+  --carmim-2: #8E2125;
+  --dourado: #C9A961;
+  --dourado-2: #9A7E3F;
+  --sena: #7A95B0;
+  --verde: #5A7A4F;
+  --verde-2: #7A9670;
+  --stone: #7A7068;
+  --stone-2: #A69888;
+
+  --cat-comer: #B42B30;
+  --cat-cafe: #C9A961;
+  --cat-cultura: #1C2A4A;
+  --cat-compras: #7A5F8F;
+  --cat-arlivre: #5A7A4F;
+  --cat-hotel: #7A95B0;
+  --cat-outros: #7A7068;
+
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { font-family: var(--sans); background: var(--creme); color: var(--marinho); font-size: 14px; line-height: 1.5; overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+body { padding-bottom: env(safe-area-inset-bottom); }
+#app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+
+button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+
+/* ========== LOGIN ========== */
+#login-screen { 
+  position: fixed; inset: 0; background: var(--creme); 
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 24px; z-index: 100; max-width: 480px; margin: 0 auto;
+}
+#login-screen h1 { font-family: var(--serif); font-style: italic; font-size: 44px; font-weight: 500; color: var(--marinho); line-height: 1; margin-bottom: 4px; letter-spacing: -1px; }
+#login-screen .subtitle { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--stone); margin-bottom: 8px; }
+#login-screen .tag { font-size: 10px; color: var(--stone); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 48px; }
+#login-screen .decor { width: 40px; height: 1px; background: var(--dourado); margin: 24px 0; }
+#login-screen .password-box { width: 100%; max-width: 320px; }
+#login-screen input { width: 100%; padding: 14px 16px; font-size: 15px; background: white; border: 0.5px solid var(--creme-3); border-radius: 8px; color: var(--marinho); margin-bottom: 16px; text-align: center; letter-spacing: 1px; }
+#login-screen input:focus { outline: none; border-color: var(--dourado); }
+#login-screen input::placeholder { color: var(--stone-2); letter-spacing: normal; }
+#login-screen .btns { display: flex; flex-direction: column; gap: 10px; }
+#login-screen .btn { padding: 14px 20px; font-size: 14px; font-weight: 500; border-radius: 8px; transition: all 0.15s; letter-spacing: 0.3px; }
+#login-screen .btn-primary { background: var(--carmim); color: var(--creme); }
+#login-screen .btn-primary:active { background: var(--carmim-2); transform: scale(0.98); }
+#login-screen .btn-secondary { background: transparent; color: var(--marinho); border: 0.5px solid var(--marinho); }
+#login-screen .btn-secondary:active { background: var(--creme-2); }
+#login-screen .error { color: var(--carmim); font-size: 12px; text-align: center; height: 20px; margin-top: -8px; margin-bottom: 8px; opacity: 0; transition: opacity 0.2s; }
+#login-screen .error.show { opacity: 1; }
+#login-screen .hint { font-size: 11px; color: var(--stone); text-align: center; margin-top: 24px; font-style: italic; line-height: 1.5; }
+
+/* ========== HEADER ========== */
+header { padding: 16px 18px 12px; display: flex; align-items: baseline; justify-content: space-between; border-bottom: 0.5px solid var(--creme-3); background: var(--creme); position: sticky; top: 0; z-index: 10; }
+header h1 { font-family: var(--serif); font-weight: 500; font-size: 26px; font-style: italic; color: var(--marinho); letter-spacing: -0.5px; line-height: 1; }
+header .tag { font-size: 9px; color: var(--stone); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+header .role-badge { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: var(--creme-2); color: var(--stone); margin-top: 4px; display: inline-block; }
+header .role-badge.admin { background: var(--carmim); color: var(--creme); }
+header .right-header { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+header .counter { font-size: 11px; color: var(--stone); text-align: right; }
+header .counter b { font-family: var(--serif); font-size: 18px; font-style: italic; color: var(--carmim); font-weight: 500; }
+header .header-actions { display: flex; gap: 10px; margin-top: 4px; }
+header .header-link { font-size: 11px; color: var(--stone); background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; }
+header .header-link:hover { color: var(--marinho); }
+
+/* ========== LOCATION BAR ========== */
+.location { background: var(--creme-2); margin: 12px 18px; padding: 11px 14px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.pulse-wrap { position: relative; width: 10px; height: 10px; flex-shrink: 0; }
+.pulse-wrap::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; background: var(--sena); opacity: 0.3; animation: pulse 2.5s infinite; }
+.pulse-dot { position: absolute; inset: 0; border-radius: 50%; background: var(--sena); }
+@keyframes pulse { 0% { transform: scale(0.6); opacity: 0.4; } 70% { transform: scale(2); opacity: 0; } 100% { transform: scale(0.6); opacity: 0; } }
+.location-txt b { color: var(--marinho); font-weight: 500; }
+.location-txt span { color: var(--stone); }
+
+/* ========== MAP ========== */
+.map-wrap { background: var(--creme-2); margin: 0 18px 14px; border-radius: 12px; padding: 8px; position: relative; overflow: hidden; }
+.map-wrap svg { width: 100%; height: auto; display: block; border-radius: 8px; }
+.arr { fill: var(--creme); stroke: var(--dourado); stroke-width: 0.6; opacity: 0.95; }
+.park { fill: var(--verde); opacity: 0.18; stroke: var(--verde); stroke-width: 0.3; }
+.sena { fill: none; stroke: var(--sena); stroke-width: 4.5; opacity: 0.55; stroke-linecap: round; stroke-linejoin: round; }
+.arr-label { font-family: var(--serif); font-size: 11px; fill: var(--marinho); text-anchor: middle; dominant-baseline: middle; font-style: italic; opacity: 0.65; pointer-events: none; }
+.pin { cursor: pointer; transition: transform 0.15s; }
+.pin:active { transform: scale(1.4); }
+.pin-shadow { opacity: 0.25; fill: #000; }
+.user-pos-outer { fill: var(--sena); opacity: 0.2; animation: userPulse 2.5s infinite; }
+.user-pos-inner { fill: var(--sena); stroke: var(--creme); stroke-width: 1.5; }
+@keyframes userPulse { 0% { r: 8; opacity: 0.3; } 70% { r: 16; opacity: 0; } 100% { r: 8; opacity: 0; } }
+
+/* ========== SEARCH/FILTERS ========== */
+.search-row { margin: 0 18px 10px; }
+.search-input { width: 100%; padding: 10px 14px; background: white; border: 0.5px solid var(--creme-3); border-radius: 22px; font-size: 13px; color: var(--marinho); }
+.search-input::placeholder { color: var(--stone-2); }
+.search-input:focus { outline: none; border-color: var(--dourado); }
+.filters { display: flex; gap: 6px; margin: 0 18px 14px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.filters::-webkit-scrollbar { display: none; }
+.filter-chip { background: transparent; color: var(--marinho); border: 0.5px solid var(--marinho); padding: 5px 12px; border-radius: 14px; font-size: 11px; font-weight: 500; white-space: nowrap; letter-spacing: 0.3px; flex-shrink: 0; transition: all 0.15s; }
+.filter-chip:active { transform: scale(0.95); }
+.filter-chip.active { background: var(--carmim); border-color: var(--carmim); color: var(--creme); }
+
+/* ========== LIST ========== */
+.list-wrap { padding: 0 18px 100px; }
+.list-label { font-size: 10px; color: var(--stone); text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 8px 2px; font-weight: 500; }
+.place-item { background: white; border: 0.5px solid var(--creme-3); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: all 0.15s; cursor: pointer; }
+.place-item:active { transform: scale(0.98); background: #FDFAF3; }
+.cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.place-info { flex: 1; min-width: 0; }
+.place-name { font-size: 14px; font-weight: 500; color: var(--marinho); margin-bottom: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.place-name .rating-inline { font-size: 11px; color: var(--dourado-2); letter-spacing: 0.5px; font-weight: 400; }
+.place-meta { font-size: 11px; color: var(--stone); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.place-dist { font-size: 12px; color: var(--carmim); font-weight: 500; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.place-dist.no-gps { color: var(--stone-2); font-weight: 400; }
+.empty-list { text-align: center; padding: 40px 20px; color: var(--stone); font-family: var(--serif); font-style: italic; font-size: 16px; }
+
+/* ========== MODAL GENÉRICO ========== */
+.modal-overlay { position: fixed; inset: 0; background: rgba(28, 42, 74, 0.4); display: none; align-items: flex-end; justify-content: center; z-index: 50; animation: fadeIn 0.2s; }
+.modal-overlay.show { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal { background: var(--creme); border-radius: 16px 16px 0 0; width: 100%; max-width: 480px; padding: 18px 22px 32px; max-height: 88vh; overflow-y: auto; animation: slideUp 0.25s ease-out; box-shadow: 0 -4px 20px rgba(28, 42, 74, 0.12); }
+.modal-handle { width: 40px; height: 4px; background: var(--creme-3); border-radius: 2px; margin: -6px auto 12px; }
+
+/* ========== DETAIL MODAL ========== */
+.modal-cat { font-size: 10px; color: var(--stone); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.modal-cat .cat-dot { width: 8px; height: 8px; }
+.modal h2 { font-family: var(--serif); font-size: 26px; font-weight: 500; color: var(--marinho); line-height: 1.1; margin-bottom: 6px; font-style: italic; }
+.modal-addr { font-size: 13px; color: var(--stone); margin-bottom: 10px; }
+.modal-fonte { font-size: 11px; color: var(--stone-2); margin-bottom: 16px; word-break: break-all; }
+.modal-fonte a { color: var(--sena); text-decoration: underline; }
+
+.section-label { font-size: 10px; color: var(--stone); letter-spacing: 1.5px; text-transform: uppercase; margin: 18px 0 8px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+.section-label button { font-size: 10px; color: var(--marinho); background: var(--creme-2); padding: 3px 10px; border-radius: 10px; letter-spacing: 0.5px; }
+.section-label button:active { transform: scale(0.95); }
+
+.nota-display { background: var(--creme-2); border-radius: 8px; padding: 12px 14px; font-size: 14px; color: var(--marinho); line-height: 1.6; font-style: italic; font-family: var(--serif); font-size: 16px; min-height: 40px; position: relative; }
+.nota-display.empty { color: var(--stone-2); font-size: 13px; font-family: var(--sans); font-style: italic; padding: 10px 14px; min-height: 0; }
+.nota-edit { width: 100%; background: white; border: 0.5px solid var(--dourado); border-radius: 8px; padding: 12px 14px; font-family: var(--serif); font-size: 16px; font-style: italic; color: var(--marinho); min-height: 60px; resize: vertical; line-height: 1.5; }
+.nota-edit:focus { outline: none; border-color: var(--carmim); }
+.nota-actions { display: flex; gap: 6px; margin-top: 6px; }
+.nota-actions button { font-size: 12px; padding: 6px 12px; border-radius: 6px; }
+.nota-actions .save { background: var(--carmim); color: var(--creme); }
+.nota-actions .cancel { background: var(--creme-2); color: var(--marinho); }
+
+/* ========== DIARIO ========== */
+.diario-entry { background: white; border: 0.5px solid var(--creme-3); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+.diario-entry-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; }
+.diario-entry-date { color: var(--marinho); font-weight: 500; letter-spacing: 0.3px; }
+.diario-entry-rating { color: var(--dourado-2); font-size: 12px; letter-spacing: 1px; }
+.diario-entry-meta { font-size: 11px; color: var(--stone); margin-bottom: 6px; }
+.diario-entry-meta b { color: var(--marinho); font-weight: 500; }
+.diario-entry-text { font-size: 13px; color: var(--marinho); line-height: 1.6; font-style: italic; font-family: var(--serif); font-size: 15px; }
+.diario-entry-text::before { content: '"'; color: var(--dourado); font-size: 22px; line-height: 0; margin-right: 3px; position: relative; top: 6px; }
+.diario-entry-actions { display: flex; gap: 10px; margin-top: 6px; font-size: 11px; }
+.diario-entry-actions button { color: var(--stone); text-decoration: underline; padding: 0; }
+.diario-entry-actions button:hover { color: var(--marinho); }
+.diario-entry-actions .del { color: var(--carmim); }
+
+.diario-empty { font-family: var(--serif); font-style: italic; color: var(--stone-2); padding: 16px 14px; text-align: center; font-size: 14px; }
+
+.diario-form { background: var(--creme-2); border-radius: 8px; padding: 14px; margin-top: 8px; }
+.diario-form-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.diario-form-row.full > * { flex: 1; }
+.diario-form label { font-size: 10px; color: var(--stone); letter-spacing: 0.8px; text-transform: uppercase; display: block; margin-bottom: 3px; }
+.diario-form input, .diario-form textarea, .diario-form select { width: 100%; padding: 8px 10px; font-size: 13px; border: 0.5px solid var(--creme-3); border-radius: 6px; background: white; color: var(--marinho); }
+.diario-form input:focus, .diario-form textarea:focus, .diario-form select:focus { outline: none; border-color: var(--dourado); }
+.diario-form textarea { font-family: var(--serif); font-style: italic; font-size: 15px; min-height: 70px; resize: vertical; line-height: 1.5; }
+.rating-stars { display: flex; gap: 4px; align-items: center; padding: 6px 0; }
+.rating-star { color: var(--creme-3); font-size: 22px; cursor: pointer; user-select: none; transition: color 0.1s; }
+.rating-star.on { color: var(--dourado); }
+.diario-form-actions { display: flex; gap: 8px; margin-top: 10px; }
+.diario-form-actions button { padding: 9px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; flex: 1; }
+.diario-form-actions .save { background: var(--carmim); color: var(--creme); }
+.diario-form-actions .cancel { background: transparent; color: var(--marinho); border: 0.5px solid var(--marinho); }
+
+/* ========== MODAL BUTTONS ========== */
+.modal-actions { display: flex; gap: 8px; margin-top: 20px; }
+.modal-btn { flex: 1; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 500; letter-spacing: 0.3px; transition: all 0.15s; }
+.modal-btn:active { transform: scale(0.97); }
+.modal-btn-primary { background: var(--carmim); color: var(--creme); }
+.modal-btn-secondary { background: transparent; color: var(--marinho); border: 0.5px solid var(--marinho); }
+.modal-btn-danger { background: transparent; color: var(--carmim); border: 0.5px solid var(--carmim); }
+
+/* ========== ADD PLACE FORM ========== */
+#modal-add h2 { margin-bottom: 4px; }
+.add-subtitle { font-size: 12px; color: var(--stone); margin-bottom: 16px; font-style: italic; }
+.add-form label { font-size: 10px; color: var(--stone); letter-spacing: 0.8px; text-transform: uppercase; display: block; margin: 12px 0 3px; font-weight: 500; }
+.add-form input, .add-form textarea, .add-form select { width: 100%; padding: 10px 12px; font-size: 14px; border: 0.5px solid var(--creme-3); border-radius: 8px; background: white; color: var(--marinho); }
+.add-form input:focus, .add-form textarea:focus, .add-form select:focus { outline: none; border-color: var(--dourado); }
+.add-form textarea { min-height: 60px; resize: vertical; font-family: var(--serif); font-style: italic; font-size: 15px; line-height: 1.5; }
+.add-hint { font-size: 11px; color: var(--stone-2); margin-top: 3px; font-style: italic; }
+
+.preview-box { background: var(--creme-2); border-radius: 8px; padding: 12px 14px; margin: 12px 0; border-left: 3px solid var(--dourado); }
+.preview-box.error { border-left-color: var(--carmim); }
+.preview-label { font-size: 10px; color: var(--stone); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; }
+.preview-name { font-family: var(--serif); font-size: 18px; font-style: italic; color: var(--marinho); margin-bottom: 4px; }
+.preview-addr { font-size: 12px; color: var(--stone); }
+.preview-coords { font-size: 11px; color: var(--stone-2); margin-top: 4px; font-variant-numeric: tabular-nums; }
+
+/* ========== FAB ========== */
+.fab { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--carmim); color: var(--creme); padding: 14px 28px; border-radius: 28px; font-size: 14px; font-weight: 500; letter-spacing: 0.5px; box-shadow: 0 4px 16px rgba(180, 43, 48, 0.35); z-index: 20; transition: all 0.15s; }
+.fab:active { transform: translateX(-50%) scale(0.96); }
+.fab.admin-only { display: none; }
+body.is-admin .fab.admin-only { display: block; }
+
+.admin-only { display: none !important; }
+body.is-admin .admin-only { display: block !important; }
+body.is-admin .admin-only.inline { display: inline-block !important; }
+body.is-admin .admin-only.flex { display: flex !important; }
+
+/* ========== TOAST ========== */
+.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--marinho); color: var(--creme); padding: 10px 18px; border-radius: 22px; font-size: 13px; z-index: 100; opacity: 0; transition: opacity 0.25s; pointer-events: none; max-width: 300px; text-align: center; }
+.toast.show { opacity: 0.95; }
+
+/* ========== SETTINGS ========== */
+.settings-section { margin-bottom: 24px; }
+.settings-section h3 { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--marinho); margin-bottom: 10px; }
+.settings-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 0.5px solid var(--creme-3); font-size: 13px; }
+.settings-row:last-child { border-bottom: none; }
+.settings-row .label { color: var(--stone); }
+.settings-row .value { color: var(--marinho); font-weight: 500; font-variant-numeric: tabular-nums; }
+.settings-row button { font-size: 12px; padding: 6px 12px; border-radius: 6px; background: var(--creme-2); color: var(--marinho); }
+.settings-row button.danger { color: var(--carmim); }
+
+/* ========== MOBILE ========== */
+@media (max-width: 380px) {
+  header h1 { font-size: 23px; }
+  .place-name { font-size: 13px; }
+  #login-screen h1 { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen">
+    <h1>Toujours Paris</h1>
+    <p class="subtitle">le carnet de voyage</p>
+    <span class="tag">depuis 2026</span>
+    <div class="decor"></div>
+    <div class="password-box">
+      <input type="password" id="password-input" placeholder="mot de passe (opcional)" autocomplete="off" autocapitalize="off">
+      <div class="error" id="login-error">mot de passe incorrect</div>
+      <div class="btns">
+        <button class="btn btn-primary" id="btn-admin">Entrer comme admin</button>
+        <button class="btn btn-secondary" id="btn-visitor">Entrer comme visiteur</button>
+      </div>
+      <div class="hint">Visitantes entram sem senha.<br>Admin gerencia o carnet.</div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="main-app" style="display:none">
+    <header>
+      <div>
+        <h1>Toujours Paris</h1>
+        <div class="tag">le carnet de voyage</div>
+        <span class="role-badge" id="role-badge">visiteur</span>
+      </div>
+      <div class="right-header">
+        <div class="counter"><b id="counter-num">0</b> lieux</div>
+        <div class="header-actions">
+          <button class="header-link admin-only inline" id="btn-settings">ajustes</button>
+          <button class="header-link" id="btn-logout">sair</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="location">
+      <div class="pulse-wrap"><div class="pulse-dot"></div></div>
+      <div class="location-txt" id="location-txt">
+        <b>Aguardando GPS...</b> <span>clique em permitir quando aparecer</span>
+      </div>
+    </div>
+
+    <div class="map-wrap">
+      <svg id="map" viewBox="0 0 640 520" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <div class="search-row">
+      <input type="text" class="search-input" id="search-input" placeholder="Buscar por nome, bairro ou categoria...">
+    </div>
+
+    <div class="filters" id="filters"></div>
+
+    <div class="list-wrap">
+      <div class="list-label" id="list-label">Lugares cadastrados</div>
+      <div id="places-list"></div>
+    </div>
+
+    <button class="fab admin-only" id="fab-add">+ novo lugar</button>
+  </div>
+
+  <!-- MODAL: Detalhe do lugar -->
+  <div class="modal-overlay" id="modal-detail-overlay">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-cat" id="modal-cat"></div>
+      <h2 id="modal-name"></h2>
+      <div class="modal-addr" id="modal-addr"></div>
+      <div class="modal-fonte" id="modal-fonte" style="display:none"></div>
+
+      <div class="section-label">
+        <span>Nota</span>
+        <button class="admin-only inline" id="btn-edit-nota">editar</button>
+      </div>
+      <div id="nota-area"></div>
+
+      <div class="section-label">
+        <span>Diário de visitas</span>
+        <button class="admin-only inline" id="btn-add-diario">+ nova entrada</button>
+      </div>
+      <div id="diario-area"></div>
+
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-secondary" id="btn-close-detail">Fechar</button>
+        <button class="modal-btn modal-btn-primary" id="btn-open-maps">Abrir no Maps</button>
+      </div>
+      <div class="modal-actions admin-only flex" style="margin-top:8px">
+        <button class="modal-btn modal-btn-danger" id="btn-delete-place">Apagar lugar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Adicionar lugar -->
+  <div class="modal-overlay" id="modal-add-overlay">
+    <div class="modal" id="modal-add">
+      <div class="modal-handle"></div>
+      <h2>Novo lugar</h2>
+      <p class="add-subtitle">Cole um link do Google Maps, digite um endereço, ou busque pelo nome</p>
+
+      <div class="add-form">
+        <label>Link, endereço ou nome *</label>
+        <input type="text" id="add-input" placeholder="ex: Le Comptoir Général, Paris" autocomplete="off">
+        <div class="add-hint">Dica: se souber o endereço exato, funciona melhor. Ex: "14 rue cassette paris"</div>
+
+        <div id="add-preview"></div>
+
+        <label>Nome</label>
+        <input type="text" id="add-nome" placeholder="Nome do lugar">
+
+        <label>Categoria *</label>
+        <select id="add-categoria"></select>
+
+        <label>Endereço</label>
+        <input type="text" id="add-endereco" placeholder="Rua, número, CEP">
+
+        <label>Nota (resumo, dica eterna)</label>
+        <textarea id="add-nota" placeholder="Ex: reservar antes, pedir o suflê..."></textarea>
+
+        <label>Link de origem (opcional)</label>
+        <input type="url" id="add-fonte" placeholder="https://...">
+
+        <div class="modal-actions">
+          <button class="modal-btn modal-btn-secondary" id="btn-cancel-add">Cancelar</button>
+          <button class="modal-btn modal-btn-primary" id="btn-save-add">Salvar lugar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Ajustes (admin) -->
+  <div class="modal-overlay" id="modal-settings-overlay">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h2>Ajustes</h2>
+      <p class="add-subtitle">Administração do carnet</p>
+
+      <div class="settings-section">
+        <h3>Estatísticas</h3>
+        <div class="settings-row"><span class="label">Lugares cadastrados</span><span class="value" id="stat-total">0</span></div>
+        <div class="settings-row"><span class="label">Entradas de diário</span><span class="value" id="stat-diario">0</span></div>
+        <div class="settings-row"><span class="label">Última atualização</span><span class="value" id="stat-last">—</span></div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Publicar pros amigos</h3>
+        <p class="add-subtitle" style="margin-bottom:8px">Baixa um HTML pronto pra subir no GitHub. Amigos com a URL vão ver tudo atualizado.</p>
+        <button class="modal-btn modal-btn-primary" id="btn-export-html" style="width:100%">Baixar index.html atualizado</button>
+      </div>
+
+      <div class="settings-section">
+        <h3>Backup</h3>
+        <div class="settings-row">
+          <span class="label">Exportar dados (JSON)</span>
+          <button id="btn-export-json">baixar</button>
+        </div>
+        <div class="settings-row">
+          <span class="label">Importar dados (JSON)</span>
+          <button id="btn-import-json">escolher</button>
+        </div>
+        <input type="file" id="file-import" accept="application/json" style="display:none">
+      </div>
+
+      <div class="settings-section">
+        <h3>Zona perigosa</h3>
+        <div class="settings-row">
+          <span class="label">Apagar tudo e voltar aos iniciais</span>
+          <button class="danger" id="btn-reset-all">apagar</button>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-secondary" id="btn-close-settings">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+</div>
+
+<script id="embedded-data" type="application/json">{"arrondissements":[{"num":1,"nome":"Louvre","label":"1er Ardt","centro":[48.862562701836005,2.3364433620533878],"coords":[[48.86992,2.32801],[48.86819,2.33066],[48.8634,2.35095],[48.85735,2.34756],[48.85405,2.34459],[48.85839,2.33755],[48.86013,2.3299],[48.86306,2.3209],[48.86901,2.32532],[48.86945,2.32516],[48.86992,2.32801]]},{"num":2,"nome":"Bourse","label":"2ème Ardt","centro":[48.86827922252251,2.3428025468913636],"coords":[[48.86933,2.35426],[48.86341,2.35095],[48.86819,2.33066],[48.86992,2.32801],[48.87198,2.34004],[48.86933,2.35426]]},{"num":3,"nome":"Temple","label":"3ème Ardt","centro":[48.862872380016924,2.360000985897692],"coords":[[48.8675,2.36383],[48.8631,2.36674],[48.85573,2.36851],[48.85725,2.36175],[48.86007,2.3569],[48.86199,2.35016],[48.86933,2.35426],[48.8675,2.36383]]},{"num":4,"nome":"Hôtel-de-Ville","label":"4ème Ardt","centro":[48.85434142627288,2.357629620324997],"coords":[[48.85573,2.36851],[48.85316,2.36914],[48.84737,2.3665],[48.84614,2.36443],[48.84948,2.35917],[48.85204,2.34991],[48.85405,2.34459],[48.85735,2.34756],[48.86199,2.35016],[48.86007,2.3569],[48.85725,2.36175],[48.85573,2.36851]]},{"num":5,"nome":"Panthéon","label":"5ème Ardt","centro":[48.844443150532705,2.3507146095752587],"coords":[[48.84948,2.35917],[48.84493,2.36603],[48.84427,2.36495],[48.83996,2.36182],[48.83678,2.35182],[48.83732,2.347],[48.83965,2.33673],[48.8407,2.33679],[48.84093,2.3373],[48.85405,2.34459],[48.85204,2.34991],[48.84948,2.35917]]},{"num":6,"nome":"Luxembourg","label":"6ème Ardt","centro":[48.84913035858523,2.3328979990533147],"coords":[[48.85405,2.34459],[48.84093,2.3373],[48.8407,2.33679],[48.83965,2.33673],[48.84511,2.3202],[48.84682,2.31657],[48.85163,2.32719],[48.85182,2.32842],[48.85826,2.33327],[48.85851,2.33245],[48.85935,2.33291],[48.85839,2.33755],[48.85405,2.34459]]},{"num":7,"nome":"Palais-Bourbon","label":"7ème Ardt","centro":[48.85617443127909,2.3121876953655494],"coords":[[48.84714,2.30734],[48.85824,2.28984],[48.86159,2.29432],[48.86322,2.29895],[48.86378,2.31847],[48.85935,2.33291],[48.85851,2.33245],[48.85826,2.33327],[48.85182,2.32842],[48.85163,2.32719],[48.84773,2.31908],[48.84593,2.31373],[48.84799,2.31053],[48.84714,2.30734]]},{"num":8,"nome":"Élysée","label":"8ème Ardt","centro":[48.872720837434464,2.312554022402065],"coords":[[48.86956,2.32584],[48.86945,2.32516],[48.86901,2.32532],[48.86306,2.3209],[48.86378,2.31854],[48.86347,2.30159],[48.86452,2.30152],[48.86533,2.2999],[48.86856,2.29891],[48.87093,2.29753],[48.87378,2.29504],[48.87808,2.29816],[48.88348,2.32718],[48.87558,2.32658],[48.87374,2.32705],[48.86956,2.32584]]},{"num":9,"nome":"Opéra","label":"9ème Ardt","centro":[48.87716351732887,2.3374575434825444],"coords":[[48.88203,2.33978],[48.88373,2.34951],[48.88063,2.34986],[48.87579,2.34825],[48.8707,2.34788],[48.87198,2.34004],[48.86956,2.32584],[48.87374,2.32705],[48.87558,2.32658],[48.88348,2.32718],[48.88455,2.32944],[48.88203,2.33978]]},{"num":10,"nome":"Entrepôt","label":"10ème Ardt","centro":[48.87613003653913,2.360728487847452],"coords":[[48.88437,2.36469],[48.8841,2.36837],[48.88274,2.37018],[48.87799,2.37028],[48.87206,2.37699],[48.8675,2.36383],[48.8707,2.34788],[48.87579,2.34825],[48.88063,2.34986],[48.88373,2.34951],[48.88437,2.36469]]},{"num":11,"nome":"Popincourt","label":"11ème Ardt","centro":[48.859059221342484,2.380058308197898],"coords":[[48.85657,2.39444],[48.85133,2.39844],[48.8481,2.39912],[48.85063,2.37882],[48.85242,2.37189],[48.85326,2.37032],[48.85316,2.36914],[48.86302,2.36677],[48.8675,2.36383],[48.87206,2.37699],[48.86718,2.38308],[48.86309,2.3873],[48.85853,2.38958],[48.85657,2.39444]]},{"num":12,"nome":"Reuilly","label":"12ème Ardt","centro":[48.834974154202456,2.4213235156144646],"coords":[[48.83357,2.41388],[48.83395,2.41699],[48.83569,2.42225],[48.84248,2.41942],[48.84343,2.41988],[48.84445,2.422],[48.84177,2.42474],[48.84089,2.43719],[48.84457,2.43794],[48.84435,2.44051],[48.84592,2.44077],[48.84575,2.44653],[48.84493,2.44641],[48.8425,2.46238],[48.84074,2.46566],[48.83645,2.46976],[48.83409,2.46903],[48.83247,2.46635],[48.831,2.46516],[48.82763,2.46461],[48.82733,2.46618],[48.82328,2.46472],[48.81927,2.46252],[48.81903,2.4628],[48.81701,2.45863],[48.81724,2.45327],[48.81796,2.44964],[48.81822,2.43735],[48.8191,2.43747],[48.81937,2.43696],[48.81965,2.43513],[48.81928,2.43418],[48.82016,2.4343],[48.82142,2.43248],[48.82169,2.43289],[48.82162,2.43219],[48.82354,2.42984],[48.82423,2.426],[48.82414,2.42007],[48.82483,2.41635],[48.82509,2.41061],[48.82965,2.40249],[48.82751,2.39435],[48.82573,2.39026],[48.84614,2.36443],[48.84737,2.3665],[48.85315,2.36913],[48.85326,2.37028],[48.85242,2.37189],[48.85063,2.37882],[48.84838,2.39592],[48.84661,2.41599],[48.83462,2.4123],[48.83386,2.41122],[48.83357,2.41388]]},{"num":13,"nome":"Gobelins","label":"13ème Ardt","centro":[48.82838796597577,2.3622703608413],"coords":[[48.84493,2.36603],[48.82573,2.39026],[48.82241,2.38152],[48.8217,2.38077],[48.81606,2.3634],[48.81597,2.35591],[48.81853,2.3524],[48.81586,2.34692],[48.81611,2.34443],[48.81558,2.3445],[48.81577,2.34397],[48.81954,2.34463],[48.82119,2.34268],[48.82367,2.34144],[48.82788,2.34163],[48.83249,2.34114],[48.83836,2.34207],[48.83678,2.35182],[48.83996,2.36182],[48.84427,2.36495],[48.84493,2.36603]]},{"num":14,"nome":"Observatoire","label":"14ème Ardt","centro":[48.82924450048987,2.3265420441989466],"coords":[[48.84362,2.32471],[48.83836,2.34207],[48.83249,2.34114],[48.82788,2.34163],[48.82367,2.34144],[48.82119,2.34268],[48.81954,2.34463],[48.81577,2.34397],[48.81634,2.34171],[48.81704,2.33175],[48.81822,2.33237],[48.82515,2.3012],[48.84052,2.31993],[48.83978,2.32137],[48.84017,2.32184],[48.84101,2.32149],[48.84362,2.32471]]},{"num":15,"nome":"Vaugirard","label":"15ème Ardt","centro":[48.840085375938216,2.2928258224249976],"coords":[[48.85824,2.28984],[48.84714,2.30734],[48.84799,2.31053],[48.84593,2.31373],[48.84682,2.31657],[48.84362,2.32471],[48.84101,2.32149],[48.84017,2.32184],[48.83978,2.32137],[48.84052,2.31993],[48.82515,2.3012],[48.82714,2.29222],[48.83246,2.27903],[48.82793,2.27274],[48.82784,2.26783],[48.83149,2.26732],[48.833,2.27004],[48.83465,2.2673],[48.8339,2.26296],[48.84696,2.27571],[48.85612,2.28811],[48.85824,2.28984]]},{"num":16,"nome":"Passy","label":"16ème Ardt","centro":[48.860392105415826,2.261970788364543],"coords":[[48.88028,2.25887],[48.87796,2.27749],[48.87865,2.2798],[48.87378,2.29504],[48.87093,2.29753],[48.86856,2.29891],[48.86533,2.2999],[48.86452,2.30152],[48.86347,2.30159],[48.86251,2.29637],[48.85978,2.29178],[48.85766,2.28913],[48.85612,2.28811],[48.84696,2.27571],[48.8339,2.26296],[48.83481,2.25515],[48.83891,2.25165],[48.8429,2.25122],[48.84558,2.25254],[48.84563,2.25066],[48.84773,2.24246],[48.8501,2.23936],[48.85344,2.22415],[48.85595,2.22433],[48.85971,2.22575],[48.86516,2.22825],[48.86799,2.23062],[48.86955,2.23212],[48.87188,2.24045],[48.87636,2.24562],[48.87415,2.25506],[48.88028,2.25887]]},{"num":17,"nome":"Batignolles-Monceau","label":"17ème Ardt","centro":[48.887326522025816,2.3067769905744084],"coords":[[48.87396,2.29517],[48.87865,2.2798],[48.88288,2.28091],[48.88657,2.28566],[48.88945,2.29154],[48.88987,2.29506],[48.89594,2.3075],[48.89963,2.31852],[48.90076,2.32039],[48.90104,2.33015],[48.8875,2.32559],[48.88352,2.32743],[48.87808,2.29816],[48.87396,2.29517]]},{"num":18,"nome":"Buttes-Montmartre","label":"18ème Ardt","centro":[48.89256926800578,2.3481605195620396],"coords":[[48.88664,2.36679],[48.88437,2.36469],[48.88373,2.34951],[48.88202,2.33982],[48.88455,2.32944],[48.88352,2.32743],[48.8875,2.32559],[48.90104,2.33015],[48.90186,2.37029],[48.89663,2.37039],[48.89541,2.37179],[48.89403,2.37002],[48.88664,2.36679]]},{"num":19,"nome":"Buttes-Chaumont","label":"19ème Ardt","centro":[48.887075996572584,2.384820960152517],"coords":[[48.90216,2.38444],[48.90098,2.39071],[48.89826,2.39552],[48.89461,2.39777],[48.88823,2.39919],[48.88542,2.39921],[48.88381,2.40011],[48.88262,2.40149],[48.88123,2.40463],[48.88026,2.40934],[48.87842,2.41084],[48.876,2.40253],[48.87525,2.39533],[48.87534,2.38978],[48.87376,2.38496],[48.87206,2.37699],[48.87799,2.37028],[48.88274,2.37018],[48.8841,2.36837],[48.88437,2.36469],[48.88664,2.36679],[48.89403,2.37002],[48.89541,2.37179],[48.89663,2.37039],[48.90172,2.37021],[48.90216,2.38444]]},{"num":20,"nome":"Ménilmontant","label":"20ème Ardt","centro":[48.86346057889562,2.4011881292846864],"coords":[[48.87547,2.41277],[48.87254,2.41363],[48.8689,2.41401],[48.86231,2.41409],[48.84879,2.41643],[48.84661,2.41599],[48.8481,2.39912],[48.85135,2.39843],[48.85657,2.39444],[48.85853,2.38958],[48.86309,2.3873],[48.86718,2.38308],[48.87206,2.37699],[48.87376,2.38496],[48.87534,2.38978],[48.87525,2.39533],[48.876,2.40253],[48.87842,2.41082],[48.87547,2.41277]]}],"parques":[{"nome":"Jardin du Luxembourg","arr":6,"poly":[[48.8475,2.331],[48.8475,2.338],[48.8465,2.3395],[48.8445,2.3395],[48.843,2.338],[48.843,2.331],[48.8445,2.329],[48.8475,2.331]]},{"nome":"Jardin des Tuileries","arr":1,"poly":[[48.8655,2.324],[48.866,2.3345],[48.863,2.3345],[48.8625,2.324],[48.8655,2.324]]},{"nome":"Champ-de-Mars","arr":7,"poly":[[48.858,2.297],[48.858,2.3025],[48.8535,2.3025],[48.8535,2.297],[48.858,2.297]]},{"nome":"Jardin des Plantes","arr":5,"poly":[[48.846,2.3555],[48.847,2.364],[48.843,2.366],[48.842,2.359],[48.846,2.3555]]},{"nome":"Parc Monceau","arr":8,"poly":[[48.88,2.3085],[48.8805,2.3115],[48.878,2.312],[48.8775,2.309],[48.88,2.3085]]},{"nome":"Parc des Buttes-Chaumont","arr":19,"poly":[[48.8815,2.379],[48.882,2.388],[48.8775,2.39],[48.877,2.38],[48.8815,2.379]]},{"nome":"Cimetière du Père-Lachaise","arr":20,"poly":[[48.863,2.389],[48.865,2.3975],[48.8585,2.4005],[48.8575,2.3905],[48.863,2.389]]},{"nome":"Parc Montsouris","arr":14,"poly":[[48.8215,2.3365],[48.823,2.342],[48.82,2.343],[48.8195,2.338],[48.8215,2.3365]]},{"nome":"Parc de la Villette","arr":19,"poly":[[48.895,2.386],[48.898,2.395],[48.8895,2.3985],[48.888,2.388],[48.895,2.386]]},{"nome":"Bois de Vincennes","arr":12,"poly":[[48.847,2.417],[48.85,2.455],[48.825,2.468],[48.8175,2.46],[48.82,2.425],[48.835,2.418],[48.847,2.417]]},{"nome":"Bois de Boulogne","arr":16,"poly":[[48.878,2.24],[48.88,2.255],[48.87,2.266],[48.85,2.268],[48.845,2.255],[48.848,2.235],[48.865,2.23],[48.878,2.24]]},{"nome":"Place des Vosges","arr":4,"poly":[[48.856,2.365],[48.856,2.3675],[48.8545,2.3675],[48.8545,2.365],[48.856,2.365]]}],"sena":[[48.827,2.414],[48.832,2.405],[48.837,2.379],[48.853,2.352],[48.856,2.347],[48.858,2.338],[48.8605,2.3225],[48.8625,2.309],[48.8615,2.2945],[48.848,2.2805],[48.841,2.262],[48.838,2.247],[48.836,2.231]],"lugares_iniciais":[{"id":"p001","nome":"Maison Mulot","categoria":"Padaria/Pâtisserie","coords":{"lat":48.8543,"lng":2.3399},"endereco":"76 Rue de Seine, 75006 Paris","arrondissement":6,"fonte":"https://www.maison-mulot.com/","notas":"Pâtisserie clássica no 6e, famosa pelos macarons e éclairs"},{"id":"p002","nome":"Chez Marcel","categoria":"Bistrô","coords":{"lat":48.8513,"lng":2.3295},"endereco":"7 Rue Stanislas, 75006 Paris","arrondissement":6,"fonte":"https://chezmarcel.cool/","notas":"Bistrô descolado, ambiente despojado, culinária francesa moderna"},{"id":"p003","nome":"Boulangerie La Parisienne","categoria":"Padaria/Pâtisserie","coords":{"lat":48.8486,"lng":2.3229},"endereco":"48 Rue Madame, 75006 Paris","arrondissement":6,"fonte":"http://www.boulangerielaparisienne.com/","notas":"Prêmio de Melhor Baguette de Paris em 2016, uma das melhores do 6e"},{"id":"p004","nome":"Chez André","categoria":"Brasserie","coords":{"lat":48.8682,"lng":2.3045},"endereco":"12 Rue Marbeuf, 75008 Paris","arrondissement":8,"fonte":"https://www.chez-andre.com/","notas":"Brasserie clássica da década de 1930, perto dos Champs-Élysées"},{"id":"p005","nome":"L'Avant Comptoir du Marché","categoria":"Bar de vinhos","coords":{"lat":48.8517,"lng":2.3376},"endereco":"14 Rue Lobineau, 75006 Paris","arrondissement":6,"fonte":"https://camdeborde.com/en/restaurants/avant-comptoir-du-marche","notas":"Bar de vinhos do Yves Camdeborde, tapas francesas em pé, ótimo pra petiscar"}]}</script>
+<script id="embedded-version" type="text/plain">bloco2-20260420</script>
+
+<script>
+// ============================================================
+// TOUJOURS PARIS — Bloco 2
+// ============================================================
+
+const ADMIN_PASSWORD = 'cassette';
+const STORAGE_KEY = 'toujours_paris_data_v1';
+
+// Projeção do mapa (bounds reais de Paris)
+const LAT_MIN = 48.815, LAT_MAX = 48.905;
+const LNG_MIN = 2.224, LNG_MAX = 2.470;
+const SVG_W = 640, SVG_H = 520;
+
+// 26 categorias em 7 grupos
+const CATEGORIAS = {
+  'Restaurante':'comer','Brasserie':'comer','Bistrô':'comer',
+  'Bar':'comer','Bar de vinhos':'comer','Street food':'comer',
+  'Café':'cafe','Padaria/Pâtisserie':'cafe','Sorveteria':'cafe',
+  'Museu':'cultura','Galeria':'cultura','Teatro':'cultura',
+  'Livraria':'cultura','Cinema':'cultura','Arquitetura/Monumento':'cultura',
+  'Concept store':'compras','Moda':'compras','Joalheria/Relojoaria':'compras',
+  'Antiquário':'compras','Mercado':'compras','Farmácia/Beleza':'compras',
+  'Parque':'arlivre','Jardim':'arlivre','Mirante':'arlivre','Passeio':'arlivre',
+  'Hotel':'hotel','Airbnb':'hotel',
+  'Spa/Hammam':'outros','Atelier':'outros','Outros':'outros',
+};
+const GRUPOS = ['comer','cafe','cultura','compras','arlivre','hotel','outros'];
+const GRUPOS_LABEL = {
+  'comer':'Comer','cafe':'Cafés','cultura':'Cultura',
+  'compras':'Compras','arlivre':'Ar livre','hotel':'Hotéis','outros':'Outros'
+};
+const GRUPOS_COR_HEX = {
+  'comer':'#B42B30','cafe':'#C9A961','cultura':'#1C2A4A',
+  'compras':'#7A5F8F','arlivre':'#5A7A4F','hotel':'#7A95B0','outros':'#7A7068'
+};
+
+// Util: projeção lat/lng → x/y do SVG
+function proj(lat, lng) {
+  const x = (lng - LNG_MIN) / (LNG_MAX - LNG_MIN) * SVG_W;
+  const y = (LAT_MAX - lat) / (LAT_MAX - LAT_MIN) * SVG_H;
+  return [x, y];
+}
+
+// Util: distância Haversine em metros
+function distancia(lat1, lng1, lat2, lng2) {
+  const R = 6371000;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLng/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
+function formatDist(m) {
+  if (m < 1000) return Math.round(m) + 'm';
+  return (m/1000).toFixed(1) + 'km';
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  return d.getDate() + ' ' + meses[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function todayISO() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function escapeHTML(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function newId() {
+  return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+// Point-in-polygon (pra detectar arrondissement do usuário)
+function pointInPolygon(p, poly) {
+  const [x, y] = p;
+  let inside = false;
+  for (let i=0, j=poly.length-1; i<poly.length; j=i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if (((yi > y) !== (yj > y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi)) inside = !inside;
+  }
+  return inside;
+}
+
+// ============================================================
+// ESTADO GLOBAL
+// ============================================================
+let DATA = null;             // dados embarcados (arr, parques, sena, lugares iniciais)
+let LUGARES = [];            // lista de lugares carregada do localStorage ou embarcados
+let userPos = null;
+let userRole = null;         // 'admin' | 'visitor'
+let filtroAtivo = 'tudo';
+let termoBusca = '';
+let currentPlace = null;     // lugar aberto no modal detail
+let notaEditing = false;
+let diarioEditingIdx = null; // null=add, number=edit
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    DATA = JSON.parse(document.getElementById('embedded-data').textContent);
+  } catch(e) { console.error('Erro dados embarcados:', e); return; }
+  
+  carregarLugares();
+  setupLogin();
+});
+
+function carregarLugares() {
+  // Tenta localStorage primeiro
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        LUGARES = parsed;
+        return;
+      }
+    }
+  } catch(e) { console.warn('localStorage falhou:', e); }
+  // Fallback: usa os lugares embarcados
+  LUGARES = (DATA.lugares_iniciais || []).map(l => ({
+    ...l,
+    notaFixa: l.notas || '',   // migra campo antigo
+    diario: l.diario || []
+  }));
+}
+
+function salvarLugares() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(LUGARES));
+    localStorage.setItem(STORAGE_KEY + '_lastsave', new Date().toISOString());
+  } catch(e) {
+    console.error('Erro ao salvar:', e);
+    toast('Não foi possível salvar localmente');
+  }
+}
+
+// ============================================================
+// LOGIN
+// ============================================================
+function setupLogin() {
+  const inp = document.getElementById('password-input');
+  const err = document.getElementById('login-error');
+  document.getElementById('btn-admin').addEventListener('click', () => {
+    if (inp.value === ADMIN_PASSWORD) {
+      userRole = 'admin';
+      enterApp();
+    } else {
+      err.classList.add('show');
+      inp.style.borderColor = 'var(--carmim)';
+      setTimeout(() => { err.classList.remove('show'); inp.style.borderColor = ''; }, 2000);
+    }
+  });
+  document.getElementById('btn-visitor').addEventListener('click', () => {
+    userRole = 'visitor';
+    enterApp();
+  });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('btn-admin').click(); });
+  document.getElementById('btn-logout').addEventListener('click', () => {
+    userRole = null;
+    document.body.classList.remove('is-admin');
+    document.getElementById('main-app').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('password-input').value = '';
+  });
+}
+
+function enterApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+  const badge = document.getElementById('role-badge');
+  if (userRole === 'admin') {
+    document.body.classList.add('is-admin');
+    badge.classList.add('admin');
+    badge.textContent = 'admin';
+  } else {
+    document.body.classList.remove('is-admin');
+    badge.classList.remove('admin');
+    badge.textContent = 'visiteur';
+  }
+  setupApp();
+}
+
+function setupApp() {
+  renderMap();
+  renderFilters();
+  renderList();
+  setupSearch();
+  setupFab();
+  setupModalDetail();
+  setupModalAdd();
+  setupModalSettings();
+  tentarGPS();
+}
+
+// ============================================================
+// MAP
+// ============================================================
+function renderMap() {
+  const svg = document.getElementById('map');
+  let out = '';
+  // Arrondissements
+  for (const arr of DATA.arrondissements) {
+    const d = 'M ' + arr.coords.map(([lat,lng]) => proj(lat,lng).join(',')).join(' L ') + ' Z';
+    out += `<path class="arr" d="${d}"/>`;
+  }
+  // Parques
+  for (const p of DATA.parques) {
+    const d = 'M ' + p.poly.map(([lat,lng]) => proj(lat,lng).join(',')).join(' L ') + ' Z';
+    out += `<path class="park" d="${d}"/>`;
+  }
+  // Sena
+  const senaPts = DATA.sena.map(([lat,lng]) => proj(lat,lng).join(',')).join(' L ');
+  out += `<path class="sena" d="M ${senaPts}"/>`;
+  // Labels arrondissements
+  for (const arr of DATA.arrondissements) {
+    const [x,y] = proj(arr.centro[0], arr.centro[1]);
+    const label = arr.num + (arr.num === 1 ? 'er' : 'e');
+    out += `<text class="arr-label" x="${x}" y="${y}">${label}</text>`;
+  }
+  // Pins
+  for (const l of LUGARES) {
+    const [x,y] = proj(l.coords.lat, l.coords.lng);
+    const cor = GRUPOS_COR_HEX[CATEGORIAS[l.categoria] || 'outros'];
+    out += `<g class="pin" data-id="${l.id}"><ellipse class="pin-shadow" cx="${x}" cy="${y+1}" rx="5" ry="2"/><circle cx="${x}" cy="${y}" r="5" fill="${cor}" stroke="white" stroke-width="1.2"/></g>`;
+  }
+  // User marker
+  out += '<g id="user-marker" style="display:none"><circle class="user-pos-outer" cx="0" cy="0" r="8"/><circle class="user-pos-inner" cx="0" cy="0" r="5"/></g>';
+  svg.innerHTML = out;
+  svg.querySelectorAll('.pin').forEach(el => el.addEventListener('click', () => openDetail(el.getAttribute('data-id'))));
+}
+
+// ============================================================
+// FILTERS
+// ============================================================
+function renderFilters() {
+  const el = document.getElementById('filters');
+  const chips = [{key:'tudo',label:'Tudo'},...GRUPOS.map(g=>({key:g,label:GRUPOS_LABEL[g]}))];
+  el.innerHTML = chips.map(c => `<button class="filter-chip ${c.key===filtroAtivo?'active':''}" data-filter="${c.key}">${c.label}</button>`).join('');
+  el.querySelectorAll('.filter-chip').forEach(btn => btn.addEventListener('click', () => {
+    filtroAtivo = btn.getAttribute('data-filter');
+    renderFilters();
+    renderList();
+  }));
+}
+
+// ============================================================
+// LIST
+// ============================================================
+function renderList() {
+  let lugares = LUGARES.slice();
+  if (filtroAtivo !== 'tudo') {
+    lugares = lugares.filter(l => (CATEGORIAS[l.categoria] || 'outros') === filtroAtivo);
+  }
+  if (termoBusca.trim()) {
+    const t = termoBusca.toLowerCase();
+    lugares = lugares.filter(l =>
+      l.nome.toLowerCase().includes(t) ||
+      (l.endereco || '').toLowerCase().includes(t) ||
+      (l.categoria || '').toLowerCase().includes(t));
+  }
+  if (userPos) {
+    lugares.forEach(l => { l._dist = distancia(userPos.lat, userPos.lng, l.coords.lat, l.coords.lng); });
+    lugares.sort((a,b) => a._dist - b._dist);
+  } else {
+    lugares.sort((a,b) => a.nome.localeCompare(b.nome));
+  }
+  const label = document.getElementById('list-label');
+  if (userPos) label.textContent = 'Perto de você';
+  else if (termoBusca.trim()) label.textContent = `${lugares.length} resultado${lugares.length===1?'':'s'}`;
+  else if (filtroAtivo !== 'tudo') label.textContent = GRUPOS_LABEL[filtroAtivo];
+  else label.textContent = 'Todos os lugares';
+  document.getElementById('counter-num').textContent = LUGARES.length;
+  
+  const el = document.getElementById('places-list');
+  if (lugares.length === 0) {
+    el.innerHTML = '<div class="empty-list">Nenhum lugar encontrado.<br><small style="font-size:12px;font-style:normal">Tente outro filtro ou busca.</small></div>';
+    return;
+  }
+  el.innerHTML = lugares.map(l => {
+    const cor = GRUPOS_COR_HEX[CATEGORIAS[l.categoria] || 'outros'];
+    const dist = l._dist !== undefined ? formatDist(l._dist) : '';
+    const distClass = l._dist !== undefined ? '' : 'no-gps';
+    const meta = `${l.categoria}${l.arrondissement ? ' · ' + l.arrondissement + 'e' : ''}`;
+    // Calcula rating médio do diário
+    const ratings = (l.diario || []).map(d => d.rating).filter(r => r);
+    const avgRating = ratings.length ? (ratings.reduce((a,b) => a+b, 0) / ratings.length) : 0;
+    const ratingInline = avgRating > 0 ? `<span class="rating-inline">${'★'.repeat(Math.round(avgRating))}</span>` : '';
+    return `
+      <div class="place-item" data-id="${l.id}">
+        <div class="cat-dot" style="background:${cor}"></div>
+        <div class="place-info">
+          <div class="place-name">${escapeHTML(l.nome)}${ratingInline}</div>
+          <div class="place-meta">${escapeHTML(meta)}</div>
+        </div>
+        <div class="place-dist ${distClass}">${dist || '—'}</div>
+      </div>`;
+  }).join('');
+  el.querySelectorAll('.place-item').forEach(item => item.addEventListener('click', () => openDetail(item.getAttribute('data-id'))));
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+function setupSearch() {
+  document.getElementById('search-input').addEventListener('input', e => {
+    termoBusca = e.target.value;
+    renderList();
+  });
+}
+
+// ============================================================
+// FAB (novo lugar)
+// ============================================================
+function setupFab() {
+  document.getElementById('fab-add').addEventListener('click', () => openAddModal());
+}
+
+// ============================================================
+// MODAL DETAIL
+// ============================================================
+function setupModalDetail() {
+  document.getElementById('btn-close-detail').addEventListener('click', closeDetail);
+  document.getElementById('modal-detail-overlay').addEventListener('click', e => {
+    if (e.target.id === 'modal-detail-overlay') closeDetail();
+  });
+  document.getElementById('btn-open-maps').addEventListener('click', () => {
+    if (!currentPlace) return;
+    const query = encodeURIComponent(currentPlace.nome + ' ' + (currentPlace.endereco || 'Paris'));
+    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+  });
+  document.getElementById('btn-delete-place').addEventListener('click', () => {
+    if (!currentPlace) return;
+    if (!confirm(`Apagar "${currentPlace.nome}" e todas as entradas do diário?`)) return;
+    LUGARES = LUGARES.filter(l => l.id !== currentPlace.id);
+    salvarLugares();
+    closeDetail();
+    renderMap();
+    renderList();
+    toast('Lugar apagado');
+  });
+  document.getElementById('btn-edit-nota').addEventListener('click', () => {
+    notaEditing = true;
+    renderNotaArea();
+  });
+  document.getElementById('btn-add-diario').addEventListener('click', () => {
+    diarioEditingIdx = -1; // -1 = adicionar novo
+    renderDiarioArea();
+  });
+}
+
+function openDetail(id) {
+  const lugar = LUGARES.find(l => l.id === id);
+  if (!lugar) return;
+  currentPlace = lugar;
+  notaEditing = false;
+  diarioEditingIdx = null;
+  
+  const grupo = CATEGORIAS[lugar.categoria] || 'outros';
+  document.getElementById('modal-cat').innerHTML = 
+    `<span class="cat-dot" style="background:${GRUPOS_COR_HEX[grupo]}"></span>${escapeHTML(lugar.categoria)}${lugar.arrondissement ? ' · ' + lugar.arrondissement + 'e arr.' : ''}`;
+  document.getElementById('modal-name').textContent = lugar.nome;
+  document.getElementById('modal-addr').textContent = lugar.endereco || '';
+  
+  const fonteEl = document.getElementById('modal-fonte');
+  if (lugar.fonte) {
+    fonteEl.innerHTML = `<a href="${escapeHTML(lugar.fonte)}" target="_blank">${escapeHTML(lugar.fonte)}</a>`;
+    fonteEl.style.display = 'block';
+  } else {
+    fonteEl.style.display = 'none';
+  }
+  
+  renderNotaArea();
+  renderDiarioArea();
+  
+  document.getElementById('modal-detail-overlay').classList.add('show');
+}
+
+function closeDetail() {
+  document.getElementById('modal-detail-overlay').classList.remove('show');
+  currentPlace = null;
+  notaEditing = false;
+  diarioEditingIdx = null;
+}
+
+function renderNotaArea() {
+  const el = document.getElementById('nota-area');
+  if (notaEditing) {
+    el.innerHTML = `
+      <textarea class="nota-edit" id="nota-textarea" placeholder="Ex: reservar 2 meses antes, pedir o suflê de queijo...">${escapeHTML(currentPlace.notaFixa || '')}</textarea>
+      <div class="nota-actions">
+        <button class="save" id="nota-save">Salvar</button>
+        <button class="cancel" id="nota-cancel">Cancelar</button>
+      </div>`;
+    setTimeout(() => document.getElementById('nota-textarea').focus(), 50);
+    document.getElementById('nota-save').addEventListener('click', () => {
+      currentPlace.notaFixa = document.getElementById('nota-textarea').value.trim();
+      salvarLugares();
+      notaEditing = false;
+      renderNotaArea();
+      toast('Nota salva');
+    });
+    document.getElementById('nota-cancel').addEventListener('click', () => {
+      notaEditing = false;
+      renderNotaArea();
+    });
+  } else {
+    if (currentPlace.notaFixa) {
+      el.innerHTML = `<div class="nota-display">${escapeHTML(currentPlace.notaFixa)}</div>`;
+    } else {
+      el.innerHTML = `<div class="nota-display empty">Sem nota ainda.</div>`;
+    }
+  }
+}
+
+function renderDiarioArea() {
+  const el = document.getElementById('diario-area');
+  const entries = (currentPlace.diario || []).slice().sort((a,b) => (b.data||'').localeCompare(a.data||''));
+  
+  let html = '';
+  
+  // Form de adicionar/editar
+  if (diarioEditingIdx !== null) {
+    const isEdit = diarioEditingIdx >= 0;
+    const entry = isEdit ? entries[diarioEditingIdx] : { data: todayISO(), rating: 0, companhia: '', pedido: '', texto: '' };
+    html += `
+      <div class="diario-form">
+        <div class="diario-form-row full">
+          <div>
+            <label>Data</label>
+            <input type="date" id="de-data" value="${entry.data || todayISO()}">
+          </div>
+          <div>
+            <label>Com quem (opcional)</label>
+            <input type="text" id="de-companhia" placeholder="Ex: Ana, amigos..." value="${escapeHTML(entry.companhia || '')}">
+          </div>
+        </div>
+        <div>
+          <label>Avaliação (opcional)</label>
+          <div class="rating-stars" id="de-rating">
+            ${[1,2,3,4,5].map(n => `<span class="rating-star ${(entry.rating||0)>=n?'on':''}" data-n="${n}">★</span>`).join('')}
+          </div>
+        </div>
+        <div>
+          <label>O que pedi (opcional)</label>
+          <input type="text" id="de-pedido" placeholder="Ex: coq au vin, vinho tinto da casa..." value="${escapeHTML(entry.pedido || '')}">
+        </div>
+        <div>
+          <label>Comentário *</label>
+          <textarea id="de-texto" placeholder="Ex: atmosfera incrível, voltaria sempre...">${escapeHTML(entry.texto || '')}</textarea>
+        </div>
+        <div class="diario-form-actions">
+          <button class="cancel" id="de-cancel">Cancelar</button>
+          <button class="save" id="de-save">${isEdit ? 'Salvar' : 'Adicionar'}</button>
+        </div>
+      </div>`;
+  }
+  
+  // Lista de entradas existentes
+  if (entries.length === 0 && diarioEditingIdx === null) {
+    html += `<div class="diario-empty">Nenhuma visita registrada ainda.</div>`;
+  } else {
+    html += entries.map((e, idx) => {
+      const rating = e.rating ? '★'.repeat(e.rating) + '☆'.repeat(5-e.rating) : '';
+      const meta = [];
+      if (e.companhia) meta.push(`com <b>${escapeHTML(e.companhia)}</b>`);
+      if (e.pedido) meta.push(`pedi: <b>${escapeHTML(e.pedido)}</b>`);
+      return `
+        <div class="diario-entry">
+          <div class="diario-entry-head">
+            <span class="diario-entry-date">${formatDate(e.data)}</span>
+            ${rating ? `<span class="diario-entry-rating">${rating}</span>` : ''}
+          </div>
+          ${meta.length ? `<div class="diario-entry-meta">${meta.join(' · ')}</div>` : ''}
+          ${e.texto ? `<div class="diario-entry-text">${escapeHTML(e.texto)}</div>` : ''}
+          <div class="diario-entry-actions admin-only flex">
+            <button class="edit" data-idx="${idx}">editar</button>
+            <button class="del" data-idx="${idx}">apagar</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+  
+  el.innerHTML = html;
+  
+  // Bind do form
+  if (diarioEditingIdx !== null) {
+    const isEdit = diarioEditingIdx >= 0;
+    // Stars clicáveis
+    el.querySelectorAll('.rating-star').forEach(star => {
+      star.addEventListener('click', () => {
+        const n = parseInt(star.getAttribute('data-n'));
+        const current = el.querySelectorAll('.rating-star');
+        const wasSet = star.classList.contains('on') && (el.querySelectorAll('.rating-star.on').length === n);
+        current.forEach((s,i) => s.classList.toggle('on', !wasSet && (i < n)));
+      });
+    });
+    document.getElementById('de-cancel').addEventListener('click', () => {
+      diarioEditingIdx = null;
+      renderDiarioArea();
+    });
+    document.getElementById('de-save').addEventListener('click', () => {
+      const texto = document.getElementById('de-texto').value.trim();
+      if (!texto) { toast('Escreve ao menos o comentário'); return; }
+      const novaEntrada = {
+        data: document.getElementById('de-data').value || todayISO(),
+        rating: el.querySelectorAll('.rating-star.on').length,
+        companhia: document.getElementById('de-companhia').value.trim(),
+        pedido: document.getElementById('de-pedido').value.trim(),
+        texto: texto
+      };
+      if (!currentPlace.diario) currentPlace.diario = [];
+      if (isEdit) {
+        // Precisa encontrar a entrada original (após ordenação pode ter índice diferente)
+        const sortedEntry = entries[diarioEditingIdx];
+        const origIdx = currentPlace.diario.findIndex(e => e === sortedEntry || 
+          (e.data === sortedEntry.data && e.texto === sortedEntry.texto));
+        if (origIdx >= 0) currentPlace.diario[origIdx] = novaEntrada;
+      } else {
+        currentPlace.diario.push(novaEntrada);
+      }
+      salvarLugares();
+      diarioEditingIdx = null;
+      renderDiarioArea();
+      renderList(); // atualiza rating médio na lista
+      toast(isEdit ? 'Entrada atualizada' : 'Entrada adicionada');
+    });
+  }
+  
+  // Bind dos botões editar/apagar
+  el.querySelectorAll('.diario-entry-actions .edit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      diarioEditingIdx = parseInt(btn.getAttribute('data-idx'));
+      renderDiarioArea();
+    });
+  });
+  el.querySelectorAll('.diario-entry-actions .del').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'));
+      const entryToDelete = entries[idx];
+      if (!confirm('Apagar essa entrada do diário?')) return;
+      currentPlace.diario = currentPlace.diario.filter(e => 
+        !(e.data === entryToDelete.data && e.texto === entryToDelete.texto));
+      salvarLugares();
+      renderDiarioArea();
+      renderList();
+      toast('Entrada apagada');
+    });
+  });
+}
+
+// ============================================================
+// MODAL ADD (novo lugar)
+// ============================================================
+function setupModalAdd() {
+  // Popula dropdown de categorias
+  const sel = document.getElementById('add-categoria');
+  sel.innerHTML = '<option value="">— escolher —</option>' + 
+    Object.keys(CATEGORIAS).map(c => `<option value="${c}">${c}</option>`).join('');
+  
+  document.getElementById('btn-cancel-add').addEventListener('click', closeAddModal);
+  document.getElementById('modal-add-overlay').addEventListener('click', e => {
+    if (e.target.id === 'modal-add-overlay') closeAddModal();
+  });
+  
+  // Busca ao digitar no campo principal
+  let buscaTimeout;
+  document.getElementById('add-input').addEventListener('input', e => {
+    clearTimeout(buscaTimeout);
+    const val = e.target.value.trim();
+    if (val.length < 4) {
+      document.getElementById('add-preview').innerHTML = '';
+      return;
+    }
+    buscaTimeout = setTimeout(() => buscarEndereco(val), 700);
+  });
+  
+  document.getElementById('btn-save-add').addEventListener('click', salvarNovoLugar);
+}
+
+function openAddModal() {
+  document.getElementById('add-input').value = '';
+  document.getElementById('add-nome').value = '';
+  document.getElementById('add-categoria').value = '';
+  document.getElementById('add-endereco').value = '';
+  document.getElementById('add-nota').value = '';
+  document.getElementById('add-fonte').value = '';
+  document.getElementById('add-preview').innerHTML = '';
+  window._addCoords = null;
+  document.getElementById('modal-add-overlay').classList.add('show');
+}
+
+function closeAddModal() {
+  document.getElementById('modal-add-overlay').classList.remove('show');
+}
+
+// Detecta tipo de input e busca
+async function buscarEndereco(texto) {
+  const previewEl = document.getElementById('add-preview');
+  
+  // É link de Google Maps?
+  if (/(?:google\.com\/maps|maps\.app\.goo\.gl|goo\.gl\/maps)/.test(texto)) {
+    previewEl.innerHTML = '<div class="preview-box"><div class="preview-label">Link do Google Maps</div><div class="preview-addr">Abra o link no Maps, pegue o nome e endereço da aba de info, e cole aqui</div></div>';
+    return;
+  }
+  
+  // Cola link http genérico?
+  if (/^https?:\/\//.test(texto)) {
+    document.getElementById('add-fonte').value = texto;
+    previewEl.innerHTML = '<div class="preview-box"><div class="preview-label">Link salvo como fonte</div><div class="preview-addr">Agora digita o nome do lugar em vez do link pra eu buscar</div></div>';
+    return;
+  }
+  
+  // Tenta geocoding via Nominatim
+  previewEl.innerHTML = '<div class="preview-box"><div class="preview-label">Buscando...</div></div>';
+  
+  try {
+    // Adiciona "Paris" se não tiver
+    let query = texto;
+    if (!/paris/i.test(query)) query += ', Paris';
+    
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&addressdetails=1`;
+    const resp = await fetch(url, { headers: { 'Accept-Language': 'pt-BR,pt,en' } });
+    const data = await resp.json();
+    
+    if (!data || data.length === 0) {
+      previewEl.innerHTML = '<div class="preview-box error"><div class="preview-label">Não encontrei</div><div class="preview-addr">Tenta digitar o endereço completo ou outro nome</div></div>';
+      window._addCoords = null;
+      return;
+    }
+    
+    const item = data[0];
+    const lat = parseFloat(item.lat), lng = parseFloat(item.lon);
+    
+    // Confere se é Paris
+    if (lat < 48.78 || lat > 48.95 || lng < 2.18 || lng > 2.52) {
+      previewEl.innerHTML = '<div class="preview-box error"><div class="preview-label">Fora de Paris</div><div class="preview-addr">O resultado está fora de Paris intramuros. Refina sua busca.</div></div>';
+      window._addCoords = null;
+      return;
+    }
+    
+    const addr = item.address || {};
+    const numero = addr.house_number || '';
+    const rua = addr.road || addr.pedestrian || '';
+    const cp = addr.postcode || '';
+    const enderecoLimpo = [numero && rua ? `${numero} ${rua}` : rua, cp ? `${cp} Paris` : 'Paris'].filter(Boolean).join(', ');
+    
+    // Detecta arrondissement
+    let arrNum = null;
+    if (cp && /^750\d\d$/.test(cp)) arrNum = parseInt(cp.slice(3));
+    
+    // Sugere nome (primeira parte do display_name)
+    const nomeDetectado = item.display_name.split(',')[0].trim();
+    
+    // Preview
+    previewEl.innerHTML = `
+      <div class="preview-box">
+        <div class="preview-label">Achei</div>
+        <div class="preview-name">${escapeHTML(nomeDetectado)}</div>
+        <div class="preview-addr">${escapeHTML(enderecoLimpo)}${arrNum ? ' — ' + arrNum + 'e arr.' : ''}</div>
+        <div class="preview-coords">${lat.toFixed(5)}, ${lng.toFixed(5)}</div>
+      </div>`;
+    
+    // Auto-preenche campos se estiverem vazios
+    if (!document.getElementById('add-nome').value) document.getElementById('add-nome').value = nomeDetectado;
+    if (!document.getElementById('add-endereco').value) document.getElementById('add-endereco').value = enderecoLimpo;
+    
+    window._addCoords = { lat, lng, arrondissement: arrNum };
+  } catch(e) {
+    console.error(e);
+    previewEl.innerHTML = '<div class="preview-box error"><div class="preview-label">Erro na busca</div><div class="preview-addr">Verifica sua conexão</div></div>';
+    window._addCoords = null;
+  }
+}
+
+function salvarNovoLugar() {
+  const nome = document.getElementById('add-nome').value.trim();
+  const categoria = document.getElementById('add-categoria').value;
+  const endereco = document.getElementById('add-endereco').value.trim();
+  const nota = document.getElementById('add-nota').value.trim();
+  const fonte = document.getElementById('add-fonte').value.trim();
+  const coords = window._addCoords;
+  
+  if (!nome) { toast('Falta o nome do lugar'); return; }
+  if (!categoria) { toast('Escolhe uma categoria'); return; }
+  if (!coords) { toast('Busca um endereço válido primeiro'); return; }
+  
+  const novoLugar = {
+    id: newId(),
+    nome: nome,
+    categoria: categoria,
+    coords: { lat: coords.lat, lng: coords.lng },
+    endereco: endereco,
+    arrondissement: coords.arrondissement,
+    notaFixa: nota,
+    diario: [],
+    fonte: fonte || undefined,
+    adicionadoEm: todayISO()
+  };
+  
+  LUGARES.push(novoLugar);
+  salvarLugares();
+  closeAddModal();
+  renderMap();
+  renderList();
+  toast(`"${nome}" adicionado`);
+}
+
+// ============================================================
+// MODAL SETTINGS
+// ============================================================
+function setupModalSettings() {
+  document.getElementById('btn-settings').addEventListener('click', openSettings);
+  document.getElementById('btn-close-settings').addEventListener('click', closeSettings);
+  document.getElementById('modal-settings-overlay').addEventListener('click', e => {
+    if (e.target.id === 'modal-settings-overlay') closeSettings();
+  });
+  document.getElementById('btn-export-html').addEventListener('click', exportarHTML);
+  document.getElementById('btn-export-json').addEventListener('click', exportarJSON);
+  document.getElementById('btn-import-json').addEventListener('click', () => document.getElementById('file-import').click());
+  document.getElementById('file-import').addEventListener('change', importarJSON);
+  document.getElementById('btn-reset-all').addEventListener('click', resetarTudo);
+}
+
+function openSettings() {
+  document.getElementById('stat-total').textContent = LUGARES.length;
+  const totalDiario = LUGARES.reduce((s,l) => s + ((l.diario||[]).length), 0);
+  document.getElementById('stat-diario').textContent = totalDiario;
+  const last = localStorage.getItem(STORAGE_KEY + '_lastsave');
+  document.getElementById('stat-last').textContent = last ? new Date(last).toLocaleString('pt-BR') : '—';
+  document.getElementById('modal-settings-overlay').classList.add('show');
+}
+
+function closeSettings() {
+  document.getElementById('modal-settings-overlay').classList.remove('show');
+}
+
+// ============================================================
+// EXPORT/IMPORT
+// ============================================================
+function exportarHTML() {
+  // Pega o HTML atual inteiro
+  const htmlAtual = document.documentElement.outerHTML;
+  // Substitui o JSON embarcado pelo atualizado (com LUGARES de agora)
+  const novoJSON = JSON.stringify({
+    arrondissements: DATA.arrondissements,
+    parques: DATA.parques,
+    sena: DATA.sena,
+    lugares_iniciais: LUGARES
+  });
+  // Re-encontra o bloco script e substitui o conteúdo
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlAtual, 'text/html');
+  const dataScript = doc.getElementById('embedded-data');
+  if (dataScript) dataScript.textContent = novoJSON;
+  // Atualiza versão
+  const verScript = doc.getElementById('embedded-version');
+  if (verScript) verScript.textContent = 'exported-' + new Date().toISOString();
+  // Monta o HTML final com DOCTYPE
+  const finalHTML = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+  
+  // Dispara download
+  const blob = new Blob([finalHTML], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'index.html';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
+  toast('index.html baixado — suba no GitHub!');
+}
+
+function exportarJSON() {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    version: 1,
+    lugares: LUGARES
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `toujours_paris_backup_${todayISO()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
+  toast('Backup JSON baixado');
+}
+
+function importarJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      const lugaresImportados = parsed.lugares || parsed;
+      if (!Array.isArray(lugaresImportados)) throw new Error('formato inválido');
+      
+      if (!confirm(`Importar ${lugaresImportados.length} lugares? Vai ser mesclado com os existentes (IDs duplicados serão atualizados).`)) return;
+      
+      const existingIds = new Set(LUGARES.map(l => l.id));
+      let novos = 0, atualizados = 0;
+      for (const l of lugaresImportados) {
+        if (!l.id) l.id = newId();
+        if (existingIds.has(l.id)) {
+          const idx = LUGARES.findIndex(x => x.id === l.id);
+          LUGARES[idx] = l;
+          atualizados++;
+        } else {
+          LUGARES.push(l);
+          novos++;
+        }
+      }
+      salvarLugares();
+      renderMap();
+      renderList();
+      toast(`Importado: ${novos} novos, ${atualizados} atualizados`);
+    } catch(err) {
+      toast('Erro: arquivo inválido');
+      console.error(err);
+    }
+    e.target.value = ''; // limpa input
+  };
+  reader.readAsText(file);
+}
+
+function resetarTudo() {
+  if (!confirm('Apagar TODOS os lugares e entradas de diário e voltar aos 5 iniciais? Isso não pode ser desfeito.')) return;
+  if (!confirm('Tem certeza? Essa ação é irreversível.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEY + '_lastsave');
+  carregarLugares();
+  salvarLugares();
+  closeSettings();
+  renderMap();
+  renderList();
+  toast('Tudo zerado, voltou aos iniciais');
+}
+
+// ============================================================
+// GPS
+// ============================================================
+function tentarGPS() {
+  if (!navigator.geolocation) {
+    document.getElementById('location-txt').innerHTML = '<b>GPS indisponível</b> <span>use a busca abaixo</span>';
+    return;
+  }
+  const txt = document.getElementById('location-txt');
+  txt.innerHTML = '<b>Pedindo permissão de GPS...</b>';
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      const arr = arrondissementDe(userPos.lat, userPos.lng);
+      txt.innerHTML = arr
+        ? `<b>Você está no ${arr}</b> <span>lat ${userPos.lat.toFixed(4)}, lng ${userPos.lng.toFixed(4)}</span>`
+        : `<b>Fora de Paris intramuros</b> <span>lat ${userPos.lat.toFixed(4)}, lng ${userPos.lng.toFixed(4)}</span>`;
+      atualizarMarcadorUsuario();
+      renderList();
+    },
+    err => {
+      let msg = 'GPS recusado';
+      if (err.code === 1) msg = 'Permissão de GPS negada';
+      else if (err.code === 2) msg = 'GPS indisponível';
+      else if (err.code === 3) msg = 'GPS demorou demais';
+      txt.innerHTML = `<b>${msg}</b> <span>use a busca abaixo</span>`;
+    },
+    { enableHighAccuracy: true, timeout: 8000, maximumAge: 30000 }
+  );
+}
+
+function arrondissementDe(lat, lng) {
+  for (const arr of DATA.arrondissements) {
+    if (pointInPolygon([lat, lng], arr.coords)) {
+      return arr.num + (arr.num === 1 ? 'er' : 'e') + ' arr. (' + arr.nome + ')';
+    }
+  }
+  return null;
+}
+
+function atualizarMarcadorUsuario() {
+  if (!userPos) return;
+  const marker = document.getElementById('user-marker');
+  const [x, y] = proj(userPos.lat, userPos.lng);
+  marker.setAttribute('transform', `translate(${x}, ${y})`);
+  marker.style.display = '';
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg, dur = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+</script>
+
+</body>
+</html>
