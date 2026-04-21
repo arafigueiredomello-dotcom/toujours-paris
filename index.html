@@ -98,15 +98,42 @@ header .header-link:hover { color: var(--marinho); }
 /* ========== MAP ========== */
 .map-wrap { background: var(--creme-2); margin: 0 18px 14px; border-radius: 12px; padding: 8px; position: relative; overflow: hidden; }
 .map-wrap svg { width: 100%; height: auto; display: block; border-radius: 8px; }
-.arr { fill: var(--creme); stroke: var(--dourado); stroke-width: 0.6; opacity: 0.95; }
+.arr { fill: var(--creme); stroke: var(--dourado); stroke-width: 0.6; opacity: 0.95; cursor: pointer; }
+.arr:hover { fill: #FFF9EC; }
 .arr-focused { fill: #FFF9EC; stroke: var(--carmim); stroke-width: 1.5; opacity: 1; }
 .arr-dimmed { opacity: 0.4; }
+
+/* ========== TOOLTIP ARRONDISSEMENT ========== */
+.arr-tooltip { position: absolute; background: var(--creme); border: 0.5px solid var(--dourado); border-radius: 10px; padding: 10px 14px 12px; box-shadow: 0 4px 14px rgba(28, 42, 74, 0.18); z-index: 20; min-width: 150px; max-width: 220px; pointer-events: auto; animation: tooltipIn 0.15s ease-out; transform-origin: bottom center; }
+.arr-tooltip::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 10px; height: 10px; background: var(--creme); border-right: 0.5px solid var(--dourado); border-bottom: 0.5px solid var(--dourado); }
+.arr-tooltip.flip-below::after { bottom: auto; top: -6px; border-right: none; border-bottom: none; border-left: 0.5px solid var(--dourado); border-top: 0.5px solid var(--dourado); }
+.arr-tooltip-num { font-family: var(--serif); font-style: italic; font-size: 18px; font-weight: 500; color: var(--carmim); line-height: 1; }
+.arr-tooltip-name { font-size: 12px; color: var(--marinho); margin-top: 3px; font-weight: 500; }
+.arr-tooltip-count { font-size: 10px; color: var(--stone); margin-top: 4px; letter-spacing: 0.5px; text-transform: uppercase; }
+.arr-tooltip-btn { margin-top: 8px; width: 100%; padding: 6px 10px; background: var(--marinho); color: var(--creme); border-radius: 6px; font-size: 11px; font-weight: 500; letter-spacing: 0.3px; transition: all 0.15s; }
+.arr-tooltip-btn:active { transform: scale(0.96); }
+.arr-tooltip-btn.secondary { background: transparent; color: var(--marinho); border: 0.5px solid var(--creme-3); margin-top: 6px; }
+@keyframes tooltipIn { from { opacity: 0; transform: translate(-50%, -4px) scale(0.9); } to { opacity: 1; transform: translate(-50%, -8px) scale(1); } }
 .park { fill: var(--verde); opacity: 0.18; stroke: var(--verde); stroke-width: 0.3; }
 .sena { fill: none; stroke: var(--sena); stroke-width: 4.5; opacity: 0.55; stroke-linecap: round; stroke-linejoin: round; }
 .arr-label { font-family: var(--serif); font-size: 11px; fill: var(--marinho); text-anchor: middle; dominant-baseline: middle; font-style: italic; opacity: 0.65; pointer-events: none; }
 .pin { cursor: pointer; transition: transform 0.15s; }
 .pin:active { transform: scale(1.4); }
 .pin-shadow { opacity: 0.25; fill: #000; }
+.pin-highlight { fill: none; stroke: var(--marinho); stroke-width: 1.2; opacity: 0; animation: pinPulse 1.4s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+.pin.is-active .pin-highlight { opacity: 1; }
+@keyframes pinPulse { 0% { r: 5; opacity: 0.6; } 100% { r: 14; opacity: 0; } }
+
+/* ========== POPUP DO PIN (no mapa) ========== */
+.pin-popup { position: absolute; background: var(--creme); border: 0.5px solid var(--dourado); border-radius: 8px; padding: 7px 11px 8px; box-shadow: 0 3px 10px rgba(28, 42, 74, 0.18); z-index: 15; min-width: 120px; max-width: 180px; pointer-events: auto; transform: translate(-50%, -100%); animation: popupIn 0.15s ease-out; cursor: pointer; }
+.pin-popup::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 8px; height: 8px; background: var(--creme); border-right: 0.5px solid var(--dourado); border-bottom: 0.5px solid var(--dourado); }
+.pin-popup.flip-below { transform: translate(-50%, 0); }
+.pin-popup.flip-below::after { bottom: auto; top: -5px; border-right: none; border-bottom: none; border-left: 0.5px solid var(--dourado); border-top: 0.5px solid var(--dourado); }
+.pin-popup-name { font-family: var(--serif); font-style: italic; font-size: 15px; font-weight: 500; color: var(--marinho); line-height: 1.15; margin-bottom: 2px; }
+.pin-popup-cat { font-size: 10px; color: var(--stone); letter-spacing: 0.8px; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+.pin-popup-cat .cat-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.pin-popup-hint { font-size: 9px; color: var(--stone-2); letter-spacing: 0.5px; margin-top: 4px; font-style: italic; }
+@keyframes popupIn { from { opacity: 0; transform: translate(-50%, -95%) scale(0.85); } to { opacity: 1; transform: translate(-50%, -100%) scale(1); } }
 .user-pos-outer { fill: var(--sena); opacity: 0.2; animation: userPulse 2.5s infinite; }
 .user-pos-inner { fill: var(--sena); stroke: var(--creme); stroke-width: 1.5; }
 @keyframes userPulse { 0% { r: 8; opacity: 0.3; } 70% { r: 16; opacity: 0; } 100% { r: 8; opacity: 0; } }
@@ -720,6 +747,7 @@ let arrFiltroAtivo = null;  // null = todos; 1-20 = só esse arr
 let currentPlace = null;     // lugar aberto no modal detail
 let notaEditing = false;
 let diarioEditingIdx = null; // null=add, number=edit
+let pinPopupAtivo = null;    // id do lugar com popup aberto no mapa, null = nenhum
 
 // ============================================================
 // INIT
@@ -843,6 +871,8 @@ function setupApp() {
 // ============================================================
 function renderMap() {
   const svg = document.getElementById('map');
+  // Qualquer re-render invalida a posição do popup (filtro, zoom, etc)
+  fecharPinPopup();
   
   // Se há arrondissement ativo, calcula bounding box do polígono pra ajustar viewBox
   if (arrFiltroAtivo !== null) {
@@ -884,7 +914,7 @@ function renderMap() {
     const isDimmed = arrFiltroAtivo !== null && arr.num !== arrFiltroAtivo;
     const classes = 'arr' + (isFocused ? ' arr-focused' : (isDimmed ? ' arr-dimmed' : ''));
     const sw = isFocused ? focusedStroke : arrStroke;
-    out += `<path class="${classes}" d="${d}" style="stroke-width:${sw}"/>`;
+    out += `<path class="${classes}" data-arr="${arr.num}" d="${d}" style="stroke-width:${sw}"/>`;
   }
   // Parques
   for (const p of DATA.parques) {
@@ -931,20 +961,101 @@ function renderMap() {
   for (const l of lugaresParaMostrar) {
     const [x,y] = proj(l.coords.lat, l.coords.lng);
     const cor = GRUPOS_COR_HEX[CATEGORIAS[l.categoria] || 'outros'];
-    out += `<g class="pin" data-id="${l.id}"><ellipse class="pin-shadow" cx="${x}" cy="${y+r*0.2}" rx="${r}" ry="${r*0.4}"/><circle cx="${x}" cy="${y}" r="${r}" fill="${cor}" stroke="white" stroke-width="${strokeW}"/></g>`;
+    out += `<g class="pin" data-id="${l.id}" data-x="${x}" data-y="${y}"><circle class="pin-highlight" cx="${x}" cy="${y}" r="5"/><ellipse class="pin-shadow" cx="${x}" cy="${y+r*0.2}" rx="${r}" ry="${r*0.4}"/><circle cx="${x}" cy="${y}" r="${r}" fill="${cor}" stroke="white" stroke-width="${strokeW}"/></g>`;
   }
   // User marker
   out += '<g id="user-marker" style="display:none"><circle class="user-pos-outer" cx="0" cy="0" r="8"/><circle class="user-pos-inner" cx="0" cy="0" r="5"/></g>';
   svg.innerHTML = out;
-  svg.querySelectorAll('.pin').forEach(el => el.addEventListener('click', () => openDetail(el.getAttribute('data-id'))));
+  svg.querySelectorAll('.pin').forEach(el => el.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    const id = el.getAttribute('data-id');
+    // Se já está com popup aberto neste pin, segundo toque abre o detalhe
+    if (pinPopupAtivo === id) {
+      fecharPinPopup();
+      openDetail(id);
+    } else {
+      mostrarPinPopup(id, el);
+    }
+  }));
+  // Clique fora dos pins fecha o popup
+  svg.addEventListener('click', (ev) => {
+    if (!ev.target.closest('.pin')) fecharPinPopup();
+  });
   
   // Reposiciona user marker se já tem posição
   if (userPos) atualizarMarcadorUsuario();
 }
 
-// ============================================================
-// FILTERS
-// ============================================================
+// Mostra um popup sobre o mapa com o nome do lugar do pin clicado.
+// Segundo toque no mesmo pin (ou toque no popup) abre o modal de detalhe.
+function mostrarPinPopup(placeId, pinEl) {
+  fecharPinPopup();
+  const lugar = LUGARES.find(l => l.id === placeId);
+  if (!lugar) return;
+
+  const svg = document.getElementById('map');
+  const wrap = svg.parentElement; // .map-wrap, position:relative
+  const svgRect = svg.getBoundingClientRect();
+  const wrapRect = wrap.getBoundingClientRect();
+  const vb = svg.getAttribute('viewBox').split(/\s+/).map(parseFloat);
+  // Converte coord do pin (no espaço do viewBox) pra pixels dentro do .map-wrap
+  const px = parseFloat(pinEl.getAttribute('data-x'));
+  const py = parseFloat(pinEl.getAttribute('data-y'));
+  const left = (svgRect.left - wrapRect.left) + ((px - vb[0]) / vb[2]) * svgRect.width;
+  const topPin = (svgRect.top - wrapRect.top) + ((py - vb[1]) / vb[3]) * svgRect.height;
+
+  const grupo = CATEGORIAS[lugar.categoria] || 'outros';
+  const cor = GRUPOS_COR_HEX[grupo];
+  const catLabel = lugar.categoria || GRUPOS_LABEL[grupo] || 'Outros';
+
+  const pop = document.createElement('div');
+  pop.className = 'pin-popup';
+  pop.id = 'pin-popup';
+  pop.innerHTML = `
+    <div class="pin-popup-name">${escapeHtml(lugar.nome)}</div>
+    <div class="pin-popup-cat"><span class="cat-dot" style="background:${cor}"></span>${escapeHtml(catLabel)}</div>
+    <div class="pin-popup-hint">Toque de novo para detalhes</div>
+  `;
+  // Posição inicial: acima do pin
+  pop.style.left = left + 'px';
+  pop.style.top = (topPin - 8) + 'px';
+  wrap.appendChild(pop);
+
+  // Se estourar pra cima, inverte pra baixo do pin
+  const popRect = pop.getBoundingClientRect();
+  if (popRect.top < wrapRect.top + 4) {
+    pop.classList.add('flip-below');
+    pop.style.top = (topPin + 10) + 'px';
+  }
+  // Ajuste horizontal se encostar nas bordas
+  const overflowLeft = popRect.left - wrapRect.left;
+  const overflowRight = wrapRect.right - popRect.right;
+  if (overflowLeft < 8) pop.style.left = (left + (8 - overflowLeft)) + 'px';
+  else if (overflowRight < 8) pop.style.left = (left - (8 - overflowRight)) + 'px';
+
+  // Clique no popup = abrir detalhe
+  pop.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    fecharPinPopup();
+    openDetail(placeId);
+  });
+
+  // Marca o pin como ativo (halo)
+  pinEl.classList.add('is-active');
+  pinPopupAtivo = placeId;
+}
+
+function fecharPinPopup() {
+  const pop = document.getElementById('pin-popup');
+  if (pop) pop.remove();
+  const svg = document.getElementById('map');
+  if (svg) svg.querySelectorAll('.pin.is-active').forEach(el => el.classList.remove('is-active'));
+  pinPopupAtivo = null;
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 function renderFilters() {
   const el = document.getElementById('filters');
   const chips = [{key:'tudo',label:'Tudo'},...GRUPOS.map(g=>({key:g,label:GRUPOS_LABEL[g]}))];
