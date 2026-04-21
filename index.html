@@ -104,12 +104,9 @@ header .header-link:hover { color: var(--marinho); }
 .park { fill: var(--verde); opacity: 0.18; stroke: var(--verde); stroke-width: 0.3; }
 .sena { fill: none; stroke: var(--sena); stroke-width: 4.5; opacity: 0.55; stroke-linecap: round; stroke-linejoin: round; }
 .arr-label { font-family: var(--serif); font-size: 11px; fill: var(--marinho); text-anchor: middle; dominant-baseline: middle; font-style: italic; opacity: 0.65; pointer-events: none; }
-.pin { cursor: pointer; transition: transform 0.15s; }
-.pin:active { transform: scale(1.4); }
+.pin { cursor: pointer; }
 .pin-shadow { opacity: 0.25; fill: #000; }
-.pin-highlight { fill: none; stroke: var(--marinho); stroke-width: 1.2; opacity: 0; }
-.pin.is-active .pin-highlight { opacity: 1; animation: pinPulse 1.4s ease-out infinite; }
-@keyframes pinPulse { 0% { r: 5; opacity: 0.6; } 100% { r: 14; opacity: 0; } }
+.pin.is-active > circle { stroke: var(--dourado); stroke-width: 2; }
 
 /* ========== POPUP DO PIN (no mapa) ========== */
 .pin-popup { position: fixed; background: var(--creme); border: 0.5px solid var(--dourado); border-radius: 8px; padding: 7px 11px 8px; box-shadow: 0 3px 10px rgba(28, 42, 74, 0.18); z-index: 40; min-width: 120px; max-width: 180px; pointer-events: auto; transform: translate(-50%, -100%); animation: popupIn 0.15s ease-out; cursor: pointer; }
@@ -763,7 +760,7 @@ function carregarLugares() {
   // Fallback: usa os lugares embarcados
   LUGARES = (DATA.lugares_iniciais || []).map(l => ({
     ...l,
-    notaFixa: l.notas || '',   // migra campo antigo
+    notaFixa: l.notaFixa || l.notas || '',   // prioriza notaFixa; cai pra notas (campo legacy)
     diario: l.diario || []
   }));
 }
@@ -949,7 +946,7 @@ function renderMap() {
   for (const l of lugaresParaMostrar) {
     const [x,y] = proj(l.coords.lat, l.coords.lng);
     const cor = GRUPOS_COR_HEX[CATEGORIAS[l.categoria] || 'outros'];
-    out += `<g class="pin" data-id="${l.id}" data-x="${x}" data-y="${y}"><circle class="pin-highlight" cx="${x}" cy="${y}" r="5"/><ellipse class="pin-shadow" cx="${x}" cy="${y+r*0.2}" rx="${r}" ry="${r*0.4}"/><circle cx="${x}" cy="${y}" r="${r}" fill="${cor}" stroke="white" stroke-width="${strokeW}"/></g>`;
+    out += `<g class="pin" data-id="${l.id}" data-x="${x}" data-y="${y}"><ellipse class="pin-shadow" cx="${x}" cy="${y+r*0.2}" rx="${r}" ry="${r*0.4}"/><circle cx="${x}" cy="${y}" r="${r}" fill="${cor}" stroke="white" stroke-width="${strokeW}"/></g>`;
   }
   // User marker
   out += '<g id="user-marker" style="display:none"><circle class="user-pos-outer" cx="0" cy="0" r="8"/><circle class="user-pos-inner" cx="0" cy="0" r="5"/></g>';
@@ -1030,6 +1027,12 @@ function mostrarPinPopup(placeId, pinEl) {
   // Marca o pin como ativo (halo)
   pinEl.classList.add('is-active');
   pinPopupAtivo = placeId;
+
+  // Garantia: mesmo que o popup flutuante falhe por CSS/stacking no desktop,
+  // o toast aparece no rodapé com o nome do lugar.
+  const arrSufixo = lugar.arrondissement === 1 ? 'er' : 'e';
+  const arrTxt = lugar.arrondissement ? ` · ${lugar.arrondissement}${arrSufixo}` : '';
+  toast(`${lugar.nome}${arrTxt}`);
 }
 
 function fecharPinPopup() {
